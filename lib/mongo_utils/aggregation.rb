@@ -2,6 +2,21 @@ module MongoUtils
   module Aggregation
     extend ActiveSupport::Concern
 
+    # The only requirement of the Aggregation module is that you have a class
+    # method defined on the including class called `collection`. Many of the
+    # popular ORMs provide this for you. Otherwise, you could do something
+    # like the following:
+    #
+    # @example
+    #   class Person
+    #     include MongoUtils::Aggregation
+    #
+    #     def self.collection
+    #       @db ||= Mongo::Connection.new.db('my_db')
+    #       @collection ||= @db.collection('people')
+    #     end
+    #   end
+    #
     module ClassMethods
 
       # Groups by the created_at date by the interval passed in

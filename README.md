@@ -4,3 +4,16 @@
 
 This project is intended to be a collection of useful utilities for
 working with MongoDB.
+
+
+### Usage
+
+The project is organized into modules which you can include into your
+classes.
+
+```ruby
+class Person
+  include MongoUtils::Aggregation
+end
+```
+
