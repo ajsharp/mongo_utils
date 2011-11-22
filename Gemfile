@@ -4,5 +4,5 @@ gemspec
 gem 'rake'
 
 group :test do
-  gem 'rspec'
+  gem 'rspec', '>= 2.7'
 end
