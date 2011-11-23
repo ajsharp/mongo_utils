@@ -29,11 +29,7 @@ module MongoUtils
 
         collection.group(
           :initial => {:count => 0},
-          :keyf => "function(d) {
-            return {
-              #{interval}: d.created_at.get#{interval.capitalize}() + 1,
-              timestamp: d.created_at}
-           }",
+          :keyf => "function(d) { return {#{interval}: d.created_at.get#{interval.capitalize}() + 1} }",
           :reduce => "function(doc, out) { out.count++; }"
         )
       end
