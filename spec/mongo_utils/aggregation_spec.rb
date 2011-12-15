@@ -17,7 +17,7 @@ describe MongoUtils::Aggregation do
       Time.stub!(:now => Time.new(2011, 11))
       Person.create! :created_at => Time.now
 
-      Person.group_by_created_at.should == [{'month' => 11.0, 'count' => 1.0}]
+      Person.group_by_created_at(60).should == [{'bucket' => Time.utc(2011, 11, 1, 7, 1), 'count' => 1.0}]
     end
   end
 end

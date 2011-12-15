@@ -21,15 +21,21 @@ module MongoUtils
 
       # Groups by the created_at date by the interval passed in
       #
-      # @param [Symbol] interval valid values are :month, :day and :year
+      # @param [Symbol] interval interval in seconds
       # @return [Array] returns an array of Hashes, containing the keys
       #   "count" and the grouping name
-      def group_by_created_at(interval = :month)
-        interval = interval.to_s
-
+      def group_by_created_at(interval)
         collection.group(
           :initial => {:count => 0},
-          :keyf => "function(d) { return {#{interval}: d.created_at.get#{interval.capitalize}() + 1} }",
+          :keyf => "function(d) {
+            var millis_since_epoch  = d.created_at.getTime();
+            var interval_in_millis  = #{interval} * 1000;
+            var time_since_last_interval = millis_since_epoch % interval_in_millis;
+            var time_until_next_interval = interval_in_millis - time_since_last_interval;
+
+            var key = new Date(millis_since_epoch + time_until_next_interval)
+            return {'bucket': key}
+          }",
           :reduce => "function(doc, out) { out.count++; }"
         )
       end
